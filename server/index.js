@@ -4,6 +4,8 @@ import tasksRouters from './routes/Tasks.router.js'
 
 const app = express();
 
+app.use(express.json());
+
 
 //Routers
 app.use(indexRouter);
