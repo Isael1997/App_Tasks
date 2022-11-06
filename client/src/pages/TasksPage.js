@@ -1,9 +1,27 @@
+import { useEffect, useState } from 'react'
+import { getTasksReguest } from '../api/Tasks.api.js'
+import TaskCard from '../components/Task.Card.js';
 
 
-function TasksPage(){
-    return(
+function TasksPage() {
+    const [tasks, setTasks] = useState([]);
+    useEffect(() => {
+        async function loadTasks() {
+            const response = await getTasksReguest();
+            console.log(response)
+            setTasks(response.data)
+            console.log(tasks)
+        }
+        loadTasks();
+    }, [])
+
+    return (
         <div>
-            Tasks Page
+            <h1>Tasks Pages</h1>
+            {tasks.map(task => (
+                <TaskCard tasks={task} key={task.id}/>                
+            ))
+            }
         </div>
     )
 }
