@@ -12,17 +12,18 @@ import { TaskContextProvider } from './context/TaskProvider.js'
 
 function App() {
   return (
-    <div>
+    <div className="bg-zinc-900 h-screen">
       <NavBar />
-      <TaskContextProvider>
-        <Routes>
-          <Route path="/" element={<TasksPage />} />
-          <Route path="/new" element={<TasksForm />} />
-          <Route path="/edit/:id" element={<TasksForm />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </TaskContextProvider>
-
+      <div className="container mx-auto py-4 px-20">
+        <TaskContextProvider>
+          <Routes>
+            <Route path="/" element={<TasksPage />} />
+            <Route path="/new" element={<TasksForm />} />
+            <Route path="/edit/:id" element={<TasksForm />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TaskContextProvider>
+      </div>
     </div>
   );
 }

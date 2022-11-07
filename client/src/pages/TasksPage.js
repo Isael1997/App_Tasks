@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import TaskCard from '../components/Task.Card.js';
-import {useTasks} from '../context/TaskProvider.js'
+import { useTasks } from '../context/TaskProvider.js'
 
 function TasksPage() {
     const { tasks, loadTasks } = useTasks();
@@ -18,8 +18,10 @@ function TasksPage() {
 
     return (
         <div>
-            <h1>Tasks Pages</h1>
-            {renderMain()}
+            <h1 className="text-5xl text-white font-bold text-center my-8">Tasks Pages</h1>
+            <div className="grid grid-cols-3 gap-2">
+                {renderMain()}
+            </div>
         </div>
     )
 }
