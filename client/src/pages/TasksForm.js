@@ -1,7 +1,10 @@
 import { Formik, Form, Field } from 'formik'
 import { CreateTaskRequest } from '../api/Tasks.api.js'
+import {useTasks} from '../context/TaskProvider.js'
+
 
 function TasksForm() {
+    const {createTask} = useTasks();
     return (
         <div>
             <Formik
@@ -9,17 +12,8 @@ function TasksForm() {
                 onSubmit={async (values, actions) => {
                     console.log(values);
                     try {
-                        const response = await CreateTaskRequest(values);
-                        console.log(response);
-
-                        actions.resetForm({
-                            values: {
-                                // the type of `values` inferred to be Blog
-                                title: '',
-                                description: '',
-                            },
-                            // you can also set the other form states here
-                        });
+                        createTask(values)
+                        actions.resetForm()
                     } catch (error) {
                         console.log(error);
                     }

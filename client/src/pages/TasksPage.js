@@ -1,20 +1,13 @@
-import { useEffect, useState } from 'react'
-import { getTasksReguest } from '../api/Tasks.api.js'
+import { useEffect } from 'react'
 import TaskCard from '../components/Task.Card.js';
-
+import {useTasks} from '../context/TaskProvider.js'
 
 function TasksPage() {
-    const [tasks, setTasks] = useState([]);
+    const { tasks, loadTasks } = useTasks();
 
     useEffect(() => {
-        async function loadTasks() {
-            const response = await getTasksReguest();
-            console.log(response)
-            setTasks(response.data)
-            console.log(tasks)
-        }
         loadTasks();
-    }, [])
+    }, []);
 
     function renderMain() {
         if (tasks.length === 0) return <h1>No tasks yet</h1>;
