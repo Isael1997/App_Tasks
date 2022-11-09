@@ -1,7 +1,7 @@
 {
   "name": "app_tasks",
   "version": "1.0.0",
-  "description": "",
+  "description": "App with login and protected routes for organizing tasks",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "start": "node server/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ronald Sanchez",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
