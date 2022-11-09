@@ -7,5 +7,5 @@ export const pool = createPool({
     port: '7777',
     user: 'root',
     password: 'password',
-    database: 'DBTasks'
+    database: 'DB_App_Tasks'
 })
