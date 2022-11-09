@@ -1,4 +1,5 @@
-import { pool } from '../database.js'
+import { pool } from '../database.js';
+import {encryptPassword} from './user.password.controller.js'
 
 export const SignIn = async (req, res) => {
     try {
@@ -16,12 +17,14 @@ export const SignUp = async (req, res) => {
     try {
         const { name, lastname, email, username, password, roles } = req.body;
 
+        //encrypting password
+        const epassword = await encryptPassword(password)
+        console.log(epassword); 
+
         const [result] = await pool.query(
             "INSERT INTO users(name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?)",
-            [name, lastname, email, username, password]
+            [name, lastname, email, username, epassword]
         );
-
-        console.log('users');
 
         //The names of the categories of the permissions of the routes
         const rol = ["user", "moderate", "admin"];
@@ -39,15 +42,13 @@ export const SignUp = async (req, res) => {
                 : null
         })
 
-        console.log('roles')
-
         res.json({
             id: result.insertId,
             name,
             lastname,
             email,
             username,
-            password,
+            password: result.password,
             roles
         });
 
