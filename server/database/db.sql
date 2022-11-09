@@ -15,12 +15,16 @@ CREATE TABLE users(
     email VARCHAR(100),
     username VARCHAR(50) not null,
     password VARCHAR(50) not null
-)
+);
+
+ALTER TABLE users ADD COLUMN roles varchar(30);
 
 CREATE TABLE roles(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    category varchar(50) NOT NULL
-)
+    name varchar(50) NOT NULL,
+    users_id int,
+    constraint FK_roles_user_id FOREIGN KEY (users_id) REFERENCES users(id) 
+);
 
 
 

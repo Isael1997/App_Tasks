@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { SignIn, SignUp } from '../controllers/Users.controlers.js';
+import { SignIn, SignUp, Test } from '../controllers/Users.controlers.js';
 
 const router = Router();
 
@@ -8,5 +8,6 @@ router.post('/api/signup', SignUp)
 
 //
 router.get('/api/signin', SignIn)
+router.post('test', Test)
 
 export default router;
