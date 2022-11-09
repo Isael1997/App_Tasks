@@ -1,13 +1,16 @@
 import {Router} from 'express'
-import { SignIn, SignUp, Test } from '../controllers/Users.controlers.js';
+import { SignIn, SignUp } from '../controllers/Users.controlers.js';
+import { verifySignUp } from '../middlewares/middlewares.js';
+
 
 const router = Router();
 
-//create users
-router.post('/api/signup', SignUp)
+//Sign Up
+router.post('/api/signup',
+[verifySignUp.checkDuplicateEmailorUsername], 
+SignUp)
 
-//
+//Sign In
 router.get('/api/signin', SignIn)
-router.post('test', Test)
 
 export default router;

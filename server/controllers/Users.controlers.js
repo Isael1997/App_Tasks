@@ -11,13 +11,6 @@ export const SignIn = async (req, res) => {
     }
 };
 
-export const Test = async (req, res) => {
-    console.log('p')
-    const { roles } = req.body;
-    const rol = ["user", "moderate", "admin"];
-    rol.map((rol) => { console.log(roles.filter((r) => r === rol)) })
-
-}
 
 export const SignUp = async (req, res) => {
     try {
