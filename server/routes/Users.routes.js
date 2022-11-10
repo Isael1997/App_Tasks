@@ -11,6 +11,6 @@ router.post('/api/signup',
 SignUp)
 
 //Sign In
-router.get('/api/signin', SignIn)
+router.post('/api/signin', SignIn)
 
 export default router;

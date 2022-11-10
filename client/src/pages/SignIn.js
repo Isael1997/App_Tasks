@@ -1,18 +1,35 @@
 import { Formik, Form, Field } from 'formik'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useUsers } from '../context/UserProvider'
 
 
 function SignIn() {
+    const { users, login } = useUsers();
+    const [user, setUser] = useState({
+        username: "",
+        password: "",
+    });
+
+    const navigate = useNavigate();
+
     return (
         <div>
             <Formik
-                initialValues={{
-                    username:"",
-                    password: ""
-                }}
+                initialValues={user}
+                enableReinitialize={true}
                 className="bg-slate-300 max-w-sm rounded-md p-4 mx-auto mt-10"
                 onSubmit={async (values, actions) => {
                     console.log(values);
+
+                    const [response] = await login(values)
+
+
+                    navigate('/home')
+                    setUser({
+                        username: "",
+                        password: "",
+                    })
                 }}
             >
                 {(actions, values) => (
@@ -44,6 +61,7 @@ function SignIn() {
                         >
                             Login
                         </button>
+                        <Link to='/signup' className="block bg-indigo-500 px-2 py-1 text-white w-full rounded-md">Sign Up</Link>
                     </Form>
                 )}
             </Formik>

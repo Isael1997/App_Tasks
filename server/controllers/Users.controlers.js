@@ -8,17 +8,17 @@ export const SignIn = async (req, res) => {
             "SELECT * FROM users where username = ? or email = ?",
             [username, email]
         );
-        if(userFound.length === 0 ){
-            return res.status(400).json({ message: "User not Found" }); 
-        }else{
+        if (userFound.length === 0) {
+            return res.status(400).json({ message: "User not Found" });
+        } else {
             console.log(userFound[0].password)
             const matchpassword = await comparePassword(password, userFound[0].password);
 
-            if(!matchpassword){
+            if (!matchpassword) {
                 return res.status(401).json({
                     message: "Invalid Password"
                 });
-            }else{
+            } else {
                 res.json(userFound);
             }
         }
@@ -27,7 +27,7 @@ export const SignIn = async (req, res) => {
     }
 };
 
-export const SignUp = async (req, res) => {
+export const createRole = async (req, res) => {
     try {
         const { name, lastname, email, username, password, roles } = req.body;
 
@@ -68,5 +68,28 @@ export const SignUp = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({ message: error.message });
+    }
+}
+export const SignUp = async (req, res) => {
+    const { name, lastname, email, username, password } = req.body;
+    try {
+        //encrypting password
+        const epassword = await encryptPassword(password)
+        console.log(epassword);
+
+        const [result] = await pool.query(
+            "INSERT INTO users(name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?)",
+            [name, lastname, email, username, epassword]
+        );
+        res.json({
+            id: result.insertId,
+            name,
+            lastname,
+            email,
+            username,
+            password: result.password,
+        });
+    } catch (error) {
+        console.log(error)
     }
 }
