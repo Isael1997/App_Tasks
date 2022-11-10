@@ -1,17 +1,31 @@
 import { pool } from '../database.js';
-import {encryptPassword} from './user.password.controller.js'
+import { encryptPassword, comparePassword } from './user.password.controller.js'
 
 export const SignIn = async (req, res) => {
+    const { username, email, password } = req.body;
     try {
-        const [result] = await pool.query(
-            "SELECT * FROM users"
+        const [userFound] = await pool.query(
+            "SELECT * FROM users where username = ? or email = ?",
+            [username, email]
         );
-        res.json(result);
+        if(userFound.length === 0 ){
+            return res.status(400).json({ message: "User not Found" }); 
+        }else{
+            console.log(userFound[0].password)
+            const matchpassword = await comparePassword(password, userFound[0].password);
+
+            if(!matchpassword){
+                return res.status(401).json({
+                    message: "Invalid Password"
+                });
+            }else{
+                res.json(userFound);
+            }
+        }
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
-
 
 export const SignUp = async (req, res) => {
     try {
@@ -19,7 +33,7 @@ export const SignUp = async (req, res) => {
 
         //encrypting password
         const epassword = await encryptPassword(password)
-        console.log(epassword); 
+        console.log(epassword);
 
         const [result] = await pool.query(
             "INSERT INTO users(name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?)",
@@ -38,7 +52,7 @@ export const SignUp = async (req, res) => {
                     "INSERT INTO roles(name, users_id) VALUES (?, ?)",
                     [equal, result.insertId]
                 )
-                
+
                 : null
         })
 
