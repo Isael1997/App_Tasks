@@ -71,19 +71,19 @@ export const createRole = async (req, res) => {
     }
 }
 export const SignUp = async (req, res) => {
-    const { name, lastname, email, username, password } = req.body;
+    const { firstname, lastname, email, username, password } = req.body;
     try {
         //encrypting password
         const epassword = await encryptPassword(password)
         console.log(epassword);
 
         const [result] = await pool.query(
-            "INSERT INTO users(name, lastname, email, username, password) VALUES (?, ?, ?, ?, ?)",
-            [name, lastname, email, username, epassword]
+            "INSERT INTO users(firstname, lastname, email, username, password) VALUES (?, ?, ?, ?, ?)",
+            [firstname, lastname, email, username, epassword]
         );
         res.json({
             id: result.insertId,
-            name,
+            firstname,
             lastname,
             email,
             username,
