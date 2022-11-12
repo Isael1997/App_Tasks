@@ -2,12 +2,13 @@ import { pool } from '../database.js';
 import { encryptPassword, comparePassword } from './user.password.controller.js'
 
 export const SignIn = async (req, res) => {
-    const { username, email, password } = req.body;
+        const {username, password} = req.params;    
     try {
         const [userFound] = await pool.query(
             "SELECT * FROM users where username = ? or email = ?",
-            [username, email]
+            [username, password]
         );
+        console.log(userFound)
         if (userFound.length === 0) {
             return res.status(400).json({ message: "User not Found" });
         } else {

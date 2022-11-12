@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export const signin = async (data) =>
-    await axios.post("http://localhost:4000/api/signin", data)
+export const signin = async (username, password) =>
+    await axios.get(`http://localhost:4000/api/signin/${username}/${password}`)
 
 
 export const signup = async (data) =>

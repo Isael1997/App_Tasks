@@ -1,6 +1,6 @@
-import {useContext, useState} from 'react'
+import { useContext, useState } from 'react'
 import { signin, signup } from '../api/Users.api.js';
-import {UserContext} from './UserContext.js'
+import { UserContext } from './UserContext.js'
 
 export const useUsers = () => {
     const context = useContext(UserContext);
@@ -10,34 +10,43 @@ export const useUsers = () => {
     return context;
 };
 
-
-export const UserContextProvider = ({children}) => {
+export const UserContextProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
-    
-    async function login(data){
+
+    function Alert(data) {
+        setTimeout(() => {
+            alert(data);
+        }, 500);
+    }
+    async function login(username, password, next) {
         try {
-            const response = await signin(data)
-        setUsers(response)
+            const response = await signin(username, password)
+            setUsers(response.data)
+            while(response.data.length === 0){
+                
+            }
+
+
         } catch (error) {
-            console.log(error)
+            console.log(error.response.data)
+            Alert(error.response.data.message);
+            next(false)
         }
-        
     }
 
-    async function register(data){
+    async function register(data) {
         try {
-            console.log("Data provider: ", data)
             const response = await signup(data)
-        setUsers(response)
+            setUsers(response)
         } catch (error) {
             console.log(error)
         }
-        
+
     }
-return(
-    <UserContext.Provider value={{users, login, register}}>
-        {children}
-    </UserContext.Provider>
-)
+    return (
+        <UserContext.Provider value={{ users, login, register }}>
+            {children}
+        </UserContext.Provider>
+    )
 }
 

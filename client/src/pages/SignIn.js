@@ -6,30 +6,28 @@ import { useUsers } from '../context/UserProvider'
 
 function SignIn() {
     const { users, login } = useUsers();
-    const [user, setUser] = useState({
-        username: "",
-        password: "",
-    });
-
     const navigate = useNavigate();
 
     return (
         <div>
             <Formik
-                initialValues={user}
-                enableReinitialize={true}
+                initialValues={{
+                    username: "",
+                    password: ""
+                }}
                 className="bg-slate-300 max-w-sm rounded-md p-4 mx-auto mt-10"
                 onSubmit={async (values, actions) => {
                     console.log(values);
+                    console.log(values.username, values.password)
+                    try {
+                        await login(values.username, values.password)
+                        console.log("entraste")
+                        actions.resetForm()
 
-                    const [response] = await login(values)
-
-
-                    navigate('/home')
-                    setUser({
-                        username: "",
-                        password: "",
-                    })
+                        navigate("/home")
+                    } catch (error) {
+                        console.log(error)
+                    }
                 }}
             >
                 {(actions, values) => (
@@ -61,7 +59,7 @@ function SignIn() {
                         >
                             Login
                         </button>
-                        <Link to='/signup' className="block bg-indigo-500 px-2 py-1 text-white w-full rounded-md">Sign Up</Link>
+                        <Link to='/signup' className="block bg-purple-500 px-2 py-1 text-white w-full rounded-md">Sign Up</Link>
                     </Form>
                 )}
             </Formik>
