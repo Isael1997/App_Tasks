@@ -30,8 +30,8 @@ function App() {
               <Route path="/Home" element={<TasksPage />} />
               <Route path='/signin' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
-              <Route path="/new" element={<TasksForm />} />
-              <Route path="/edit/:id" element={<TasksForm />} />
+              <Route path="/home/new" element={<TasksForm />} />
+              <Route path="/home/edit/:id" element={<TasksForm />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </TaskContextProvider>

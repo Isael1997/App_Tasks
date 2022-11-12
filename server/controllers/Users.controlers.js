@@ -1,5 +1,7 @@
 import { pool } from '../database.js';
 import { encryptPassword, comparePassword } from './user.password.controller.js'
+import config from '../config.js'
+import jwt from 'jsonwebtoken'
 
 export const SignIn = async (req, res) => {
         const {username, password} = req.params;    
@@ -12,7 +14,6 @@ export const SignIn = async (req, res) => {
         if (userFound.length === 0) {
             return res.status(400).json({ message: "User not Found" });
         } else {
-            console.log(userFound[0].password)
             const matchpassword = await comparePassword(password, userFound[0].password);
 
             if (!matchpassword) {
@@ -20,7 +21,13 @@ export const SignIn = async (req, res) => {
                     message: "Invalid Password"
                 });
             } else {
-                res.json(userFound);
+                const token = jwt.sign(
+                    { id: userFound[0].id }, 
+                    config.secret, 
+                    { expiresIn: 86400 }
+                    );
+                console.log(userFound)    
+                res.json({ token });
             }
         }
     } catch (error) {
