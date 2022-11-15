@@ -1,11 +1,11 @@
 import { Formik, Form, Field } from 'formik'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 import { useUsers } from '../context/UserProvider'
-
+import {Authlogin} from '../auth/auth.login.js'
+import TasksPage from './TasksPage.js';
 
 function SignIn() {
-    const { users, login } = useUsers();
+    const { users, login, token } = useUsers();
     const navigate = useNavigate();
 
     return (
@@ -20,11 +20,13 @@ function SignIn() {
                     console.log(values);
                     console.log(values.username, values.password)
                     try {
-                        await login(values.username, values.password)
+                        const re = await login(values.username, values.password)
                         console.log("entraste")
+                        console.log("Response: ", re)
+                        const auth = Authlogin(re)
+                        console.log("auth: ", auth)
                         actions.resetForm()
-
-                        navigate("/home")
+                        navigate('/home')
                     } catch (error) {
                         console.log(error)
                     }

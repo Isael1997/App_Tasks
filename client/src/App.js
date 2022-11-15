@@ -16,9 +16,13 @@ import NotFound from './pages/NotFound';
 
 //Conexion con the api of Backend
 import { TaskContextProvider } from './context/TaskProvider.js'
-import { UserContextProvider } from './context/UserProvider';
+import { UserContextProvider, useUsers } from './context/UserProvider';
+
+//Authetocation of Token in FrontEnd
+import {Authlogin} from './auth/auth.login.js'
 
 function App() {
+  const auth = Authlogin()
   return (
     <div className="bg-zinc-900 h-screen">
       <NavBar />
@@ -27,7 +31,7 @@ function App() {
           <TaskContextProvider>
             <Routes>
               <Route path='/' element={<Navigate replace to="/signin" />} />
-              <Route path="/Home" element={<TasksPage />} />
+              <Route path="/Home" element={<TasksPage auth/>} />
               <Route path='/signin' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path="/home/new" element={<TasksForm />} />

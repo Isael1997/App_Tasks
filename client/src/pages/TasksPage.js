@@ -1,12 +1,16 @@
 import { useEffect } from 'react'
+import { Authlogin } from '../auth/auth.login.js';
 import TaskCard from '../components/Task.Card.js';
 import { useTasks } from '../context/TaskProvider.js'
+import {useUsers} from '../context/UserProvider.js'
 
 function TasksPage() {
     const { tasks, loadTasks } = useTasks();
-
+    const {token} = useUsers();
+    const auth = Authlogin(token)
+    console.log(auth.token)
     useEffect(() => {
-        loadTasks();
+        loadTasks(auth);
     }, []);
 
     function renderMain() {

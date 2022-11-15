@@ -19,7 +19,18 @@ export const verifyToken = async (req, res, next) => {
             return res.status(403).json({ message: "User no found" });
         }
 
+        const tokenFound = await pool.query("SELECT token FROM users WHERE ID = ?", [decoded.id])
+        console.log(tokenFound[0])
+
+
+        if (!tokenFound[0]) {
+            return res.status(403).json({ message: "Token Not Found" });
+        }
+        
         next();
+
+
+
     } catch (error) {
         console.log(error);
         return res.status(404).json({ message: "Unauthorized" });

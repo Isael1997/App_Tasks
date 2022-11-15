@@ -13,9 +13,25 @@ export const useTasks = () => {
 export const TaskContextProvider = ({ children }) => {
     const [tasks, setTasks] = useState([]);
 
-    async function loadTasks() {
-        const response = await getTasksRequest();
-        setTasks(response.data);
+    function Alert() {
+        setTimeout(() => {
+            alert("No tiene Permiso para entrar en esta ruta");
+        }, 500);
+    }
+
+    async function loadTasks(token) {
+        try {
+            console.log("of load: ", token)
+            const response = await getTasksRequest(token);
+            setTasks(response.data);
+        } catch (error) {
+            console.log(error)
+            console.log(error.response.headers)
+            if(error.response.data.message === "Unauthorized"){
+                Alert()
+            }
+        }
+        
     }
 
     const createTask = async (task) => {

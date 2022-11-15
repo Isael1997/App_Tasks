@@ -26,6 +26,11 @@ export const SignIn = async (req, res) => {
                     config.secret, 
                     { expiresIn: 86400 }
                     );
+                const addtoken = await pool.query("UPDATE users SET token = ? WHERE id = ?", [
+                        token,
+                        userFound[0].id,
+                    ]);   
+                console.log(addtoken[0])     
                 console.log(userFound)    
                 res.json({ token });
             }
@@ -101,3 +106,5 @@ export const SignUp = async (req, res) => {
         console.log(error)
     }
 }
+
+//verifytoken of routers

@@ -12,6 +12,7 @@ export const useUsers = () => {
 
 export const UserContextProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
+    const [token, setToken] = useState([]);
 
     function Alert(data) {
         setTimeout(() => {
@@ -21,12 +22,8 @@ export const UserContextProvider = ({ children }) => {
     async function login(username, password, next) {
         try {
             const response = await signin(username, password)
-            setUsers(response.data)
-            while(response.data.length === 0){
-                
-            }
-
-
+            setToken(response.data)
+            return response.data
         } catch (error) {
             console.log(error.response.data)
             Alert(error.response.data.message);
@@ -44,7 +41,7 @@ export const UserContextProvider = ({ children }) => {
 
     }
     return (
-        <UserContext.Provider value={{ users, login, register }}>
+        <UserContext.Provider value={{ users, token, login, register }}>
             {children}
         </UserContext.Provider>
     )

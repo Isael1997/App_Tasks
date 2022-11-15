@@ -8,6 +8,8 @@ CREATE TABLE tasks (
     createAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+alter table users add column token varchar(200);
+
 CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50),
