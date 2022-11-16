@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 export const getTasksRequest = async (token) =>{
-
-    await axios.get("http://localhost:4000/tasks", {
+    console.log("back: ", token)
+    return await axios.get("http://localhost:4000/tasks", {
         headers:{
-            "x-access-token":'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY2ODQ4MzY2MCwiZXhwIjoxNjY4NTcwMDYwfQ.hCEz4gkCMoSfCvpqaKWH-KuB9-5xVRsLPbd57nBrUq8'
+            "x-access-token": token   
         }
     })
 }

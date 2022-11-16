@@ -7,10 +7,11 @@ import {useUsers} from '../context/UserProvider.js'
 function TasksPage() {
     const { tasks, loadTasks } = useTasks();
     const {token} = useUsers();
+    console.log("take page: ", token)
     const auth = Authlogin(token)
     console.log(auth.token)
     useEffect(() => {
-        loadTasks(auth);
+        loadTasks(auth.token);
     }, []);
 
     function renderMain() {

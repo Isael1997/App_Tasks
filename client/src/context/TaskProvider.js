@@ -15,7 +15,7 @@ export const TaskContextProvider = ({ children }) => {
 
     function Alert() {
         setTimeout(() => {
-            alert("No tiene Permiso para entrar en esta ruta");
+            alert("No tiene Permiso para entrar aqui");
         }, 500);
     }
 
@@ -23,13 +23,14 @@ export const TaskContextProvider = ({ children }) => {
         try {
             console.log("of load: ", token)
             const response = await getTasksRequest(token);
+            console.log(response.data)
             setTasks(response.data);
         } catch (error) {
             console.log(error)
-            console.log(error.response.headers)
-            if(error.response.data.message === "Unauthorized"){
+            /*if(error.response.data.message === "Unauthorized"){
                 Alert()
-            }
+            }*/
+            Alert()
         }
         
     }
