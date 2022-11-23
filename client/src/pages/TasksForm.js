@@ -2,20 +2,25 @@ import { Formik, Form, Field } from 'formik'
 import { useTasks } from '../context/TaskProvider.js'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import {useUsers} from '../context/UserProvider.js'
+
 
 function TasksForm() {
     const { createTask, getTask, updateTask } = useTasks();
+    const {token} = useUsers();
     const [task, setTask] = useState({
         title: "",
         description: "",
     });
+    const auth = token;
     const params = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         const loadTask = async () => {
             if (params.id) {
-                const task = await getTask(params.id);
+                console.log("THe Id: ", params.id)
+                const task = await getTask(params.id, auth.token);
                 console.log(task);
                 setTask({
                     title: task.title,
@@ -36,11 +41,11 @@ function TasksForm() {
                     console.log(values);
                     try {
                         if (params.id) {
-                            await updateTask(params.id, values);
+                            await updateTask(params.id, values, auth.token);
                         } else {
-                            await createTask(values);
+                            await createTask(values, auth.token);
                         }
-                        navigate("/");
+                        navigate("/home");
                         setTask({
                             title: "",
                             description: "",

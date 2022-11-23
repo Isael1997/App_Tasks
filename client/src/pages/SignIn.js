@@ -21,10 +21,6 @@ function SignIn() {
                     console.log(values.username, values.password)
                     try {
                         const re = await login(values.username, values.password)
-                        console.log("entraste")
-                        console.log("Response: ", re)
-                        const auth = Authlogin(re)
-                        console.log("auth: ", auth)
                         actions.resetForm()
                         navigate('/home')
                     } catch (error) {

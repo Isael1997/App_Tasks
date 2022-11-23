@@ -1,12 +1,15 @@
 import { useTasks } from '../context/TaskProvider.js'
 import { useNavigate } from 'react-router-dom'
+import {useUsers} from '../context/UserProvider.js'
 
 function TaskCard({ tasks }) {
     const { deleteTask, toggleTaskDone } = useTasks();
+    const {token} = useUsers();
+    const auth = token;
     const navigate = useNavigate();
 
     const handleDone = async () => {
-        await toggleTaskDone(tasks.id);
+        await toggleTaskDone(tasks.id, auth.token);
     };
 
     return (
@@ -20,7 +23,7 @@ function TaskCard({ tasks }) {
             <div className="flex gap-x-1">
                 <button
                     className="bg-slate-300 px-2 py-1 text-black"
-                    onClick={() => deleteTask(tasks.id)}>Delete
+                    onClick={() => deleteTask(tasks.id, auth.token)}>Delete
                 </button>
                 <button
                     className="bg-slate-300 px-2 py-1 text-black"

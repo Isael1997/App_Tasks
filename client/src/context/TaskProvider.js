@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { CreateTaskRequest, getTasksRequest, deleteTaskRequest, getTaskRequest, updateTaskRequest, toggleTaskDoneRequest } from "../api/Tasks.api.js";
+import { Headers, CreateTaskRequest, getTasksRequest, deleteTaskRequest, getTaskRequest, updateTaskRequest, toggleTaskDoneRequest } from "../api/Tasks.api.js";
 import { TaskContext } from '../context/TaskContext.js'
 
 export const useTasks = () => {
@@ -21,60 +21,70 @@ export const TaskContextProvider = ({ children }) => {
 
     async function loadTasks(token) {
         try {
-            console.log("of load: ", token)
             const response = await getTasksRequest(token);
-            console.log(response.data)
             setTasks(response.data);
         } catch (error) {
             console.log(error)
-            /*if(error.response.data.message === "Unauthorized"){
+            if(error.response.data.message === "Unauthorized"){
                 Alert()
-            }*/
-            Alert()
+            }
         }
         
     }
 
-    const createTask = async (task) => {
+    const createTask = async (task, token) => {
         try {
-            await CreateTaskRequest(task);
+            const response = await CreateTaskRequest(task, token);
             // setTasks([...tasks, response.data]);
         } catch (error) {
             console.error(error);
+            if(error.response.data.message === "Unauthorized"){
+                Alert()
+            }
         }
     };
 
-    const deleteTask = async (id) => {
+    const deleteTask = async (id, token) => {
         try {
-            const response = await deleteTaskRequest(id);
+            const response = await deleteTaskRequest(id, token);
+            console.log(response)
             setTasks(tasks.filter((task) => task.id !== id));
         } catch (error) {
             console.error(error);
+            if(error.response.data.message === "Unauthorized"){
+                Alert()
+            }
         }
     };
 
-    const updateTask = async (id, newTask) => {
+    const updateTask = async (id, newTask, token) => {
         try {
-            const response = await updateTaskRequest(id, newTask);
+            const response = await updateTaskRequest(id, newTask, token);
             console.log(response);
         } catch (error) {
             console.error(error);
+            if(error.response.data.message === "Unauthorized"){
+                Alert()
+            }
         }
     };
 
-    const getTask = async (id) => {
+    const getTask = async (id, token) => {
         try {
-            const response = await getTaskRequest(id);
+            const response = await getTaskRequest(id, token);
             return response.data;
         } catch (error) {
             console.error(error);
+            if(error.response.data.message === "Unauthorized"){
+                Alert()
+            }
         }
     };
 
-    const toggleTaskDone = async (id) => {
+    const toggleTaskDone = async (id, token) => {
         try {
             const taskFound = tasks.find((task) => task.id === id);
-            await toggleTaskDoneRequest(id, taskFound.done === 0 ? true : false);
+            await toggleTaskDoneRequest(id, taskFound.done === 0 ? true : false, token);
             
                 tasks.map((task) =>
                     task.id === id ? task.done = task.done === 0 ? 1: 0 : task.done
@@ -82,6 +92,9 @@ export const TaskContextProvider = ({ children }) => {
             setTasks([...tasks])
         } catch (error) {
             console.error(error);
+            if(error.response.data.message === "Unauthorized"){
+                Alert()
+            }
         }
     };
     return (
